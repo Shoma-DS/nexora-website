@@ -188,13 +188,29 @@ const ChatbotSection = () => {
     const msgs = msgRefs.current.filter(Boolean);
     if (!msgs.length) return;
 
-    // Set initial hidden state
     gsap.set(msgs, { opacity: 0, y: 18 });
 
-    const scrollPerMsg = window.innerWidth < 768 ? 260 : 320;
-    const scrollLength = msgs.length * scrollPerMsg;
+    if (window.innerWidth < 768) {
+      // Mobile: no pin — stagger in when section enters viewport
+      ScrollTrigger.create({
+        trigger: ".cb-fullscreen",
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          gsap.to(msgs, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.22,
+            ease: "power2.out",
+          });
+        },
+      });
+      return;
+    }
 
-    // Pin the full-screen section
+    // Desktop: pin + scrub
+    const scrollLength = msgs.length * 320;
     const pinTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".cb-fullscreen",
@@ -206,15 +222,10 @@ const ChatbotSection = () => {
       },
     });
 
-    // Reveal each message in sequence
     msgs.forEach((el, i) => {
-      pinTl.to(el,
-        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
-        i * 0.9
-      );
+      pinTl.to(el, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, i * 0.9);
     });
 
-    // Scroll the messages area upward to always show latest
     const inner = msgsInnerRef.current;
     if (inner && inner.parentElement) {
       pinTl.to(inner, {

@@ -290,6 +290,15 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
 
 const CasesSection = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const sectorBadgeAssets = {
+    "AI Bot": { type: "lordicon", src: "https://cdn.lordicon.com/efxgwrkc.json" },
+    "Social Ads": { type: "lottie", src: "https://assets8.lottiefiles.com/packages/lf20_touohxv0.json" },
+    "LINE": { type: "lottie", src: "https://assets2.lottiefiles.com/packages/lf20_u4yrau.json" },
+    "Funnel": { type: "lordicon", src: "https://cdn.lordicon.com/lenjvibx.json" },
+    "AI Training": { type: "lordicon", src: "https://cdn.lordicon.com/gsqxdxog.json" },
+    "Automation": { type: "lottie", src: "https://assets5.lottiefiles.com/packages/lf20_zrqthn6o.json" },
+    "Promotion": { type: "lottie", src: "https://assets1.lottiefiles.com/packages/lf20_2ks3pjua.json" },
+  };
 
   useGSAP(() => {
     if (window.innerWidth < 768) return;
@@ -390,13 +399,31 @@ const CasesSection = () => {
                 </div>
                 <div className="absolute top-4 right-4">
                   <span
-                    className="font-display text-[9px] tracking-[0.25em] uppercase px-2 py-1 rounded-full"
+                    className="font-display text-[9px] tracking-[0.2em] uppercase px-2 py-1 rounded-full flex items-center gap-1.5"
                     style={{
                       color: index % 5 === 0 ? "#22D3EE" : index % 5 === 1 ? "#818CF8" : index % 5 === 2 ? "#34D399" : index % 5 === 3 ? "#FB923C" : "#F472B6",
                       border: `1px solid ${index % 5 === 0 ? "#22D3EE30" : index % 5 === 1 ? "#818CF830" : index % 5 === 2 ? "#34D39930" : index % 5 === 3 ? "#FB923C30" : "#F472B630"}`,
                       background: index % 5 === 0 ? "#22D3EE08" : index % 5 === 1 ? "#818CF808" : index % 5 === 2 ? "#34D39908" : index % 5 === 3 ? "#FB923C08" : "#F472B608",
                     }}
                   >
+                    {sectorBadgeAssets[study.sector]?.type === "lordicon" ? (
+                      <lord-icon
+                        src={sectorBadgeAssets[study.sector].src}
+                        trigger="loop"
+                        delay="1300"
+                        colors={`primary:${index % 5 === 0 ? "#22D3EE" : index % 5 === 1 ? "#818CF8" : index % 5 === 2 ? "#34D399" : index % 5 === 3 ? "#FB923C" : "#F472B6"}`}
+                        style={{ width: "13px", height: "13px" }}
+                      />
+                    ) : (
+                      <lottie-player
+                        src={sectorBadgeAssets[study.sector]?.src}
+                        background="transparent"
+                        speed="1"
+                        loop
+                        autoplay
+                        style={{ width: "13px", height: "13px" }}
+                      />
+                    )}
                     {study.sector}
                   </span>
                 </div>

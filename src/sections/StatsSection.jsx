@@ -4,6 +4,8 @@ import { SplitText } from "gsap/all";
 import gsap from "gsap";
 
 const StatsSection = () => {
+  const statIcons = ["qeopvznf", "lyrrgrsl", "gsqxdxog", "qtkfmjtu"];
+
   useGSAP(() => {
     const titleSplit = SplitText.create(".stats-title", { type: "chars" });
     const paragraphSplit = SplitText.create(".stats-section p.stats-desc", {
@@ -89,6 +91,16 @@ const StatsSection = () => {
 
         <div className="flex md:justify-center items-center translate-y-5 md:mt-0 mt-10">
           <div className="md:max-w-sm max-w-md">
+            <div className="mb-5 md:ml-auto w-fit rounded-xl border border-gold/20 bg-gold/5 px-3 py-2">
+              <lottie-player
+                src="https://assets9.lottiefiles.com/packages/lf20_6wutsrox.json"
+                background="transparent"
+                speed="1"
+                loop
+                autoplay
+                style={{ width: "120px", height: "36px" }}
+              />
+            </div>
             <p className="stats-desc text-base md:text-right text-balance font-body text-white/50 leading-[2]">
               数字が証明する、NEXORAの実力。
               多くの企業のデータ変革を支援してきた実績が、すべてを語ります。
@@ -101,7 +113,16 @@ const StatsSection = () => {
             {stats.map((stat, index) => (
               <div key={index} className="relative flex-1 col-center">
                 <div className="text-center">
-                  <p className="md:text-sm text-xs font-body text-white/40">{stat.label}</p>
+                  <div className="flex items-center justify-center gap-2">
+                    <lord-icon
+                      src={`https://cdn.lordicon.com/${statIcons[index % statIcons.length]}.json`}
+                      trigger="loop"
+                      delay="1400"
+                      colors="primary:#22D3EE"
+                      style={{ width: "18px", height: "18px" }}
+                    />
+                    <p className="md:text-sm text-xs font-body text-white/40">{stat.label}</p>
+                  </div>
                   <p className="font-display text-3xl md:text-5xl font-[800] text-gold tracking-tighter mt-2">
                     <span
                       className="stat-number"

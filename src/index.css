@@ -248,6 +248,16 @@ body::-webkit-scrollbar {
     }
   }
 
+  .cb-fullscreen {
+    @apply w-full relative;
+    height: 100dvh;
+
+    @media (max-width: 767px) {
+      height: auto;
+      padding-bottom: 2rem;
+    }
+  }
+
   .cases-section {
     @apply bg-bg-primary relative w-full;
     height: 120dvh;

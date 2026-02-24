@@ -14,21 +14,38 @@ const ServicesSlider = () => {
   });
 
   useGSAP(() => {
-    const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
+    const sliderEl = sliderRef.current;
+    if (!sliderEl) return;
 
     if (!isTablet) {
+      const cardsTrack = sliderEl.querySelector(".service-cards");
+      if (!cardsTrack) return;
+
+      const getHorizontalShift = () => {
+        const cards = cardsTrack.querySelectorAll(":scope > div");
+        const lastCard = cards[cards.length - 1];
+        if (!lastCard) return 0;
+
+        const lastCardRight = lastCard.offsetLeft + lastCard.clientWidth;
+        const viewport = sliderEl.clientWidth;
+        // Ensure the last card has a little breathing room on the right.
+        return Math.max(0, lastCardRight - viewport + 28);
+      };
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".services-section",
-          start: "2% top",
-          end: `+=${scrollAmount + 1500}px`,
-          scrub: true,
+          start: "top top",
+          end: () => `+=${getHorizontalShift() + Math.max(900, window.innerHeight * 0.9)}`,
+          scrub: 1,
           pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
-      tl.to(".services-section", {
-        x: `-${scrollAmount + 1500}px`,
-        ease: "power1.inOut",
+      tl.to(cardsTrack, {
+        x: () => `-${getHorizontalShift()}px`,
+        ease: "none",
       });
     }
 
@@ -44,7 +61,7 @@ const ServicesSlider = () => {
       .to(".first-text-split", { xPercent: -30, ease: "power1.inOut" })
       .to(".services-text-scroll", { xPercent: -22, ease: "power1.inOut" }, "<")
       .to(".second-text-split", { xPercent: -10, ease: "power1.inOut" }, "<");
-  });
+  }, { dependencies: [isTablet], revertOnUpdate: true });
 
   return (
     <div ref={sliderRef} className="slider-wrapper">
@@ -52,6 +69,8 @@ const ServicesSlider = () => {
         {services.map((service) => {
           const IconComponent = getServiceIcon(service.nameEn);
           const CardVisual = getServiceCardVisual(service.nameEn);
+          const showLordicon = service.nameEn === "Generative AI";
+          const showLottieIcon = service.nameEn === "AI Training";
 
           return (
             <div
@@ -88,7 +107,26 @@ const ServicesSlider = () => {
                           border: `1px solid ${service.color}25`,
                         }}
                       >
-                        <IconComponent color={service.color} size={28} />
+                        {showLordicon ? (
+                          <lord-icon
+                            src="https://cdn.lordicon.com/efxgwrkc.json"
+                            trigger="loop"
+                            delay="1200"
+                            colors={`primary:${service.color}`}
+                            style={{ width: "28px", height: "28px" }}
+                          />
+                        ) : showLottieIcon ? (
+                          <lottie-player
+                            src="https://assets3.lottiefiles.com/packages/lf20_jcikwtux.json"
+                            background="transparent"
+                            speed="1"
+                            loop
+                            autoplay
+                            style={{ width: "28px", height: "28px" }}
+                          />
+                        ) : (
+                          <IconComponent color={service.color} size={28} />
+                        )}
                       </div>
                       <span
                         className="font-display text-[9px] tracking-[0.25em] uppercase mt-1"

@@ -8,7 +8,7 @@ const ServicesSection = () => {
         <div className="lg:w-[57%] flex-none h-80 lg:h-full md:mt-20 xl:mt-0">
           <ServicesTitle />
         </div>
-        <div className="h-full">
+        <div className="h-full w-full lg:w-[43%] overflow-hidden">
           <ServicesSlider />
         </div>
       </div>

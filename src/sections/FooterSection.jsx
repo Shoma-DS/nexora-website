@@ -105,7 +105,10 @@ const FooterSection = () => {
         </div>
 
         <div className="copyright-box">
-          <p>Copyright &copy; 2026 NEXORA株式会社 — All Rights Reserved</p>
+          <p>
+            Copyright &copy; 2026 NEXORA株式会社 — All Rights Reserved
+            <span className="ml-2 text-white/30">Icons: Lordicon / Animations: LottieFiles</span>
+          </p>
           <div className="flex items-center gap-7">
             <p>プライバシーポリシー</p>
             <p>利用規約</p>
