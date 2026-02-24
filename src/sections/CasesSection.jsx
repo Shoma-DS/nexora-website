@@ -2,178 +2,280 @@ import { caseStudies } from "../constants";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-// Abstract data visualizations per sector
-const SectorVisual = ({ sector, color = "#22D3EE" }) => {
-  const visuals = {
-    Finance: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Line chart - declining bad debt */}
-        <polyline points="10,70 35,60 55,50 80,42 100,30 130,20 160,15 190,10"
-          stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.8" />
-        <polyline points="10,70 35,60 55,50 80,42 100,30 130,20 160,15 190,10 190,90 10,90"
-          fill={`${color}12`} />
-        {/* Grid lines */}
-        {[20, 40, 60, 80].map(y => (
-          <line key={y} x1="10" y1={y} x2="190" y2={y} stroke={color} strokeOpacity="0.08" strokeWidth="0.5" strokeDasharray="4 4" />
-        ))}
-        {/* Data points */}
-        {[[10,70],[55,50],[100,30],[160,15],[190,10]].map(([x,y], i) => (
-          <circle key={i} cx={x} cy={y} r="3" fill={color} opacity="0.8" />
-        ))}
-        {/* Down trend indicator */}
-        <text x="160" y="8" fill={color} fontSize="8" fontFamily="Syne" opacity="0.6">−60%</text>
-      </svg>
-    ),
-    Manufacturing: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Circular gauge */}
-        <circle cx="100" cy="55" r="40" stroke={color} strokeOpacity="0.1" strokeWidth="8" />
-        <circle cx="100" cy="55" r="40" stroke={color} strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={`${Math.PI * 80 * 0.8} ${Math.PI * 80}`}
-          transform="rotate(-210 100 55)" opacity="0.8" />
-        {/* Gear teeth hints */}
-        {[0,30,60,90,120,150,180,210,240,270,300,330].map(deg => (
-          <rect key={deg} x="97" y="9" width="6" height="10" rx="1"
-            fill={color} fillOpacity="0.15"
-            transform={`rotate(${deg} 100 55)`} />
-        ))}
-        {/* Metric text */}
-        <text x="100" y="51" fill={color} fontSize="18" fontFamily="Syne" fontWeight="700"
-          textAnchor="middle" opacity="0.9">80%</text>
-        <text x="100" y="63" fill={color} fontSize="7" fontFamily="Noto Sans JP"
-          textAnchor="middle" opacity="0.5">稼働率改善</text>
-        {/* Bar indicators on sides */}
-        <rect x="15" y="40" width="6" height="30" rx="3" fill={color} fillOpacity="0.2" />
-        <rect x="15" y="55" width="6" height="15" rx="3" fill={color} fillOpacity="0.7" />
-        <rect x="179" y="40" width="6" height="30" rx="3" fill={color} fillOpacity="0.2" />
-        <rect x="179" y="46" width="6" height="24" rx="3" fill={color} fillOpacity="0.7" />
-      </svg>
-    ),
-    Retail: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Bar chart - inventory reduction */}
-        {[
-          { x: 20, h: 65, label: "Before", opacity: 0.25 },
-          { x: 50, h: 55, label: "", opacity: 0.3 },
-          { x: 80, h: 48, label: "", opacity: 0.4 },
-          { x: 110, h: 38, label: "", opacity: 0.55 },
-          { x: 140, h: 28, label: "", opacity: 0.7 },
-          { x: 170, h: 20, label: "After", opacity: 0.9 },
-        ].map((bar, i) => (
-          <g key={i}>
-            <rect x={bar.x} y={90 - bar.h - 10} width="22" height={bar.h} rx="3"
-              fill={color} fillOpacity={bar.opacity} />
-          </g>
-        ))}
-        {/* Baseline */}
-        <line x1="10" y1="80" x2="200" y2="80" stroke={color} strokeOpacity="0.2" strokeWidth="0.5" />
-        {/* Trend line */}
-        <polyline points="31,18 61,22 91,29 121,39 151,49 181,58"
-          stroke={color} strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
-        {/* Labels */}
-        <text x="31" y="88" fill={color} fontSize="6" fontFamily="Syne" textAnchor="middle" opacity="0.5">1Q</text>
-        <text x="181" y="88" fill={color} fontSize="6" fontFamily="Syne" textAnchor="middle" opacity="0.5">6Q</text>
-        <text x="190" y="62" fill={color} fontSize="8" fontFamily="Syne" opacity="0.7">−35%</text>
-      </svg>
-    ),
-    Healthcare: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* ECG / pulse line */}
-        <polyline
-          points="5,50 30,50 40,50 50,20 57,70 63,50 75,50 85,50 95,15 103,75 110,50 130,50 140,50 150,25 157,65 163,50 180,50 200,50"
-          stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.8"
-        />
-        {/* Speed indicators - concentric arcs */}
-        <path d="M 160 80 A 30 30 0 0 1 190 50" stroke={color} strokeWidth="1.5" opacity="0.3" strokeLinecap="round" />
-        <path d="M 153 83 A 37 37 0 0 1 193 46" stroke={color} strokeWidth="1" opacity="0.2" strokeLinecap="round" />
-        {/* 5x badge */}
-        <circle cx="175" cy="25" r="14" fill={color} fillOpacity="0.15" stroke={color} strokeOpacity="0.4" strokeWidth="1" />
-        <text x="175" y="22" fill={color} fontSize="11" fontFamily="Syne" fontWeight="700"
-          textAnchor="middle" opacity="0.9">5×</text>
-        <text x="175" y="32" fill={color} fontSize="5.5" fontFamily="Syne"
-          textAnchor="middle" opacity="0.6">SPEED</text>
-        {/* Grid */}
-        <line x1="0" y1="50" x2="145" y2="50" stroke={color} strokeOpacity="0.1" strokeWidth="0.5" />
-      </svg>
-    ),
-    Cloud: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Cost reduction visualization - stacked area */}
-        <path d="M10,75 L40,70 L70,62 L100,50 L130,35 L160,22 L190,15 L190,85 L10,85Z"
-          fill={color} fillOpacity="0.08" />
-        <polyline points="10,75 40,70 70,62 100,50 130,35 160,22 190,15"
-          stroke={color} strokeWidth="1.5" opacity="0.7" />
-        {/* Cloud nodes */}
-        {[[30,30],[100,20],[170,28]].map(([x,y], i) => (
-          <g key={i}>
-            <circle cx={x} cy={y} r="10" fill={color} fillOpacity="0.1" stroke={color} strokeOpacity="0.3" strokeWidth="1" />
-            <circle cx={x} cy={y} r="3" fill={color} opacity="0.6" />
-          </g>
-        ))}
-        {/* Connecting dashed lines between clouds */}
-        <line x1="40" y1="30" x2="90" y2="20" stroke={color} strokeOpacity="0.25" strokeDasharray="4 3" strokeWidth="1" />
-        <line x1="110" y1="20" x2="160" y2="28" stroke={color} strokeOpacity="0.25" strokeDasharray="4 3" strokeWidth="1" />
-        {/* Savings badge */}
-        <text x="110" y="72" fill={color} fontSize="9" fontFamily="Syne" fontWeight="700" opacity="0.8">−55% COST</text>
-      </svg>
-    ),
-    Logistics: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Route map dots */}
-        {[
-          [20,70],[50,45],[80,60],[110,30],[145,55],[175,20]
-        ].map(([x,y], i, arr) => (
-          <g key={i}>
-            {i < arr.length - 1 && (
-              <>
-                {/* Old route (dashed) */}
-                <line x1={x} y1={y} x2={arr[i+1][0]} y2={arr[i+1][1]}
-                  stroke={color} strokeOpacity="0.15" strokeDasharray="3 3" strokeWidth="1" />
-              </>
-            )}
-            <circle cx={x} cy={y} r="5" fill={color} fillOpacity="0.2" stroke={color} strokeOpacity="0.5" strokeWidth="1" />
-            <circle cx={x} cy={y} r="2" fill={color} opacity="0.8" />
-          </g>
-        ))}
-        {/* Optimized route (solid, shorter-looking) */}
-        <polyline points="20,70 60,35 110,30 175,20"
-          stroke={color} strokeWidth="2" opacity="0.7" strokeLinecap="round" strokeLinejoin="round" />
-        {/* Speed arrow */}
-        <path d="M155 60 L185 60 L178 55 M185 60 L178 65" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
-        <text x="20" y="87" fill={color} fontSize="7" fontFamily="Syne" opacity="0.5">ORIGIN</text>
-        <text x="158" y="87" fill={color} fontSize="7" fontFamily="Syne" opacity="0.5">DEST +42%</text>
-      </svg>
-    ),
-    EdTech: (
-      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
-        {/* Progress ring - large */}
-        <circle cx="60" cy="50" r="35" stroke={color} strokeOpacity="0.1" strokeWidth="6" />
-        <circle cx="60" cy="50" r="35" stroke={color} strokeWidth="6" strokeLinecap="round"
-          strokeDasharray={`${Math.PI * 70 * 0.78} ${Math.PI * 70}`}
-          transform="rotate(-90 60 50)" opacity="0.8" />
-        <text x="60" y="47" fill={color} fontSize="13" fontFamily="Syne" fontWeight="700"
-          textAnchor="middle" opacity="0.9">2.8×</text>
-        <text x="60" y="58" fill={color} fontSize="6" textAnchor="middle" opacity="0.5">完了率</text>
+const caseAnimStyles = `
+  @keyframes cv-draw { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+  @keyframes cv-draw-long { from { stroke-dashoffset: 700; } to { stroke-dashoffset: 0; } }
+  @keyframes cv-bar-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes cv-bar-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes cv-fade { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes cv-pulse { 0%,100%{transform:scale(1);opacity:.7} 50%{transform:scale(1.5);opacity:1} }
+  @keyframes cv-wave { 0%{r:4;opacity:.8} 100%{r:30;opacity:0} }
+  @keyframes cv-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes cv-flow { 0%{stroke-dashoffset:30;opacity:0} 20%{opacity:.7} 100%{stroke-dashoffset:0;opacity:.3} }
+  @keyframes cv-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes cv-scan { 0%{opacity:0;transform:translateY(0)} 20%{opacity:.6} 80%{opacity:.6} 100%{opacity:0;transform:translateY(80px)} }
+  @keyframes cv-ping { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(2.5);opacity:0} }
 
-        {/* Progress bars - individual learners */}
+  .cv-draw { stroke-dasharray:400; animation: cv-draw 1.6s ease-out forwards; }
+  .cv-draw-l { stroke-dasharray:700; animation: cv-draw-long 2s ease-out forwards; }
+  .cv-bar-y { transform-origin:bottom; animation: cv-bar-y 1s cubic-bezier(.16,1,.3,1) both; }
+  .cv-bar-x { transform-origin:left; animation: cv-bar-x 1s cubic-bezier(.16,1,.3,1) both; }
+  .cv-fade { animation: cv-fade .6s ease-out both; }
+  .cv-pulse { animation: cv-pulse 2s ease-in-out infinite; }
+  .cv-wave { animation: cv-wave 2s ease-out infinite; }
+  .cv-spin { transform-origin:center; animation: cv-spin 10s linear infinite; }
+  .cv-flow { stroke-dasharray:20 10; animation: cv-flow 2.2s ease-in-out infinite; }
+  .cv-blink { animation: cv-blink 1.1s step-end infinite; }
+  .cv-scan { animation: cv-scan 3.5s ease-in-out infinite; }
+  .cv-ping { animation: cv-ping 2s ease-out infinite; }
+`;
+
+// Abstract data visualizations per sector — each with unique animation style
+const SectorVisual = ({ sector, color = "#22D3EE" }) => {
+  const c = color;
+  const visuals = {
+
+    // ── AI Bot: ターミナル + ノードグラフ ──
+    "AI Bot": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {/* Node connector lines */}
+        <line x1="30" y1="28" x2="75" y2="45" stroke={c} strokeOpacity=".2" strokeWidth="1" strokeDasharray="3 3" className="cv-flow" />
+        <line x1="75" y1="45" x2="125" y2="30" stroke={c} strokeOpacity=".2" strokeWidth="1" strokeDasharray="3 3" className="cv-flow" style={{animationDelay:".4s"}} />
+        <line x1="125" y1="30" x2="170" y2="50" stroke={c} strokeOpacity=".2" strokeWidth="1" strokeDasharray="3 3" className="cv-flow" style={{animationDelay:".8s"}} />
+        {/* Nodes */}
+        {[[30,28,"Input"],[75,45,"Claude"],[125,30,"n8n"],[170,50,"Slack"]].map(([x,y,label],i)=>(
+          <g key={label} className="cv-fade" style={{animationDelay:`${i*.15}s`}}>
+            <rect x={x-15} y={y-11} width="30" height="22" rx="5"
+              fill={label==="Claude"?`${c}22`:`${c}0D`} stroke={c} strokeOpacity={label==="Claude"?.5:.2} strokeWidth="1"/>
+            <text x={x} y={y+4} fill={c} fillOpacity={label==="Claude"?.9:.55}
+              fontSize="7.5" fontFamily="Syne" fontWeight="700" textAnchor="middle">{label}</text>
+          </g>
+        ))}
+        {/* Scan line */}
+        <line x1="0" y1="0" x2="200" y2="0" stroke={c} strokeOpacity=".35" strokeWidth="1.5" className="cv-scan"/>
+        {/* Terminal at bottom */}
+        <rect x="8" y="63" width="184" height="22" rx="4" fill={`${c}08`} stroke={c} strokeOpacity=".15" strokeWidth=".5"/>
+        <text x="14" y="76" fill={c} fillOpacity=".4" fontSize="7" fontFamily="Syne">$ AI response: 42% 業務削減達成 ✓</text>
+        <text x="14" y="80" fill={c} fillOpacity=".25" fontSize="6" fontFamily="Syne" className="cv-blink">█</text>
+      </svg>
+    ),
+
+    // ── Social Ads: 縦棒グラフ（ROAS成長） ──
+    "Social Ads": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {/* Grid */}
+        {[20,40,60,80].map(y=>(
+          <line key={y} x1="20" y1={y} x2="195" y2={y} stroke={c} strokeOpacity=".06" strokeWidth=".5"/>
+        ))}
+        {/* Vertical bars */}
         {[
-          { y: 18, w: 90, op: 0.5 },
-          { y: 30, w: 110, op: 0.6 },
-          { y: 42, w: 75, op: 0.45 },
-          { y: 54, w: 125, op: 0.7 },
-          { y: 66, w: 100, op: 0.55 },
-          { y: 78, w: 130, op: 0.8 },
-        ].map((bar, i) => (
-          <g key={i}>
-            <rect x="115" y={bar.y} width="75" height="6" rx="3" fill={color} fillOpacity="0.08" />
-            <rect x="115" y={bar.y} width={bar.w * 0.6} height="6" rx="3" fill={color} fillOpacity={bar.op} />
+          {x:30,h:30,label:"1月",op:.35},{x:58,h:42,label:"2月",op:.45},
+          {x:86,h:52,label:"3月",op:.55},{x:114,h:63,label:"4月",op:.65},
+          {x:142,h:72,label:"5月",op:.78},{x:170,h:80,label:"6月",op:.95},
+        ].map((b,i)=>(
+          <g key={b.label} className="cv-fade" style={{animationDelay:`${i*.08}s`}}>
+            <rect x={b.x} y={85-b.h} width="22" height={b.h} rx="3"
+              fill={c} fillOpacity={b.op} className="cv-bar-y" style={{animationDelay:`${i*.06}s`}}/>
+            <text x={b.x+11} y="89" fill={c} fillOpacity=".35" fontSize="6" fontFamily="Syne" textAnchor="middle">{b.label}</text>
+          </g>
+        ))}
+        {/* ROAS label at top */}
+        <text x="185" y="10" fill={c} fillOpacity=".8" fontSize="9" fontFamily="Syne" fontWeight="700" textAnchor="end">×8.4 ROAS</text>
+        {/* Trend overlay line */}
+        <polyline points="41,55 69,43 97,33 125,22 153,13 181,5"
+          stroke={c} strokeWidth="1.5" strokeDasharray="3 3" opacity=".5" strokeLinecap="round" className="cv-draw"/>
+      </svg>
+    ),
+
+    // ── LINE: 拡散リング（友だち増加） ──
+    "LINE": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {/* Expanding wave rings from center */}
+        <circle cx="100" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:"0s"}}/>
+        <circle cx="100" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:".7s"}}/>
+        <circle cx="100" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:"1.4s"}}/>
+        {/* Static rings */}
+        <circle cx="100" cy="45" r="18" stroke={c} strokeOpacity=".12" strokeWidth="1" fill="none"/>
+        <circle cx="100" cy="45" r="30" stroke={c} strokeOpacity=".08" strokeWidth="1" fill="none"/>
+        <circle cx="100" cy="45" r="42" stroke={c} strokeOpacity=".05" strokeWidth="1" fill="none"/>
+        {/* Center */}
+        <circle cx="100" cy="45" r="8" fill={c} fillOpacity=".18" stroke={c} strokeOpacity=".5" strokeWidth="1"/>
+        <text x="100" y="49" fill={c} fontSize="8" fontFamily="Syne" fontWeight="700" textAnchor="middle" opacity=".9">LINE</text>
+        {/* Orbit user dots */}
+        {[0,60,120,180,240,300].map((deg,i)=>{
+          const rad=(deg-90)*Math.PI/180;
+          return (
+            <g key={i} className="cv-fade" style={{animationDelay:`${.1+i*.1}s`}}>
+              <circle cx={100+30*Math.cos(rad)} cy={45+30*Math.sin(rad)} r="4"
+                fill={c} fillOpacity=".15" stroke={c} strokeOpacity=".4" strokeWidth="1"/>
+              <circle cx={100+30*Math.cos(rad)} cy={45+30*Math.sin(rad)} r="1.5" fill={c} opacity=".8"/>
+            </g>
+          );
+        })}
+        {/* Count badge */}
+        <text x="152" y="16" fill={c} fillOpacity=".8" fontSize="10" fontFamily="Syne" fontWeight="700">+8,000</text>
+        <text x="152" y="26" fill={c} fillOpacity=".4" fontSize="7" fontFamily="Syne">友だち獲得</text>
+      </svg>
+    ),
+
+    // ── Funnel: 台形ファネル ──
+    "Funnel": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {[
+          {tw:180,bw:145,y:4,op:.18,label:"クリック",n:"12,400"},
+          {tw:145,bw:110,y:20,op:.28,label:"LP閲覧",n:"9,800"},
+          {tw:110,bw:78,y:36,op:.40,label:"LINE登録",n:"4,200"},
+          {tw:78,bw:50,y:52,op:.55,label:"商談",n:"980"},
+          {tw:50,bw:30,y:68,op:.80,label:"成約",n:"312"},
+        ].map((s,i)=>{
+          const tx=(200-s.tw)/2, bx=(200-s.bw)/2;
+          return (
+            <g key={i} className="cv-fade" style={{animationDelay:`${i*.1}s`}}>
+              <polygon points={`${tx},${s.y} ${tx+s.tw},${s.y} ${bx+s.bw},${s.y+16} ${bx},${s.y+16}`}
+                fill={c} fillOpacity={s.op} stroke={c} strokeOpacity=".12" strokeWidth=".5"/>
+              <text x="28" y={s.y+12} fill={c} fillOpacity=".5" fontSize="7" fontFamily="Syne">{s.label}</text>
+              <text x="172" y={s.y+12} fill={c} fillOpacity=".7" fontSize="7" fontFamily="Syne" textAnchor="end">{s.n}</text>
+            </g>
+          );
+        })}
+        {/* CVR badge */}
+        <text x="186" y="87" fill={c} fillOpacity=".8" fontSize="9" fontFamily="Syne" fontWeight="700" textAnchor="end">CVR ×3.2</text>
+      </svg>
+    ),
+
+    // ── AI Training: レーダーチャート ──
+    "AI Training": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {(()=>{
+          const cx=72,cy=48,r=36;
+          const axes=["ChatGPT","プロンプト","自動化","倫理","Claude"];
+          const before=[.22,.18,.15,.30,.20];
+          const after=[.91,.87,.83,.94,.89];
+          const pts=(vals)=>vals.map((v,i)=>{
+            const a=(i/5)*2*Math.PI-Math.PI/2;
+            return `${cx+r*v*Math.cos(a)},${cy+r*v*Math.sin(a)}`;
+          }).join(" ");
+          return (
+            <>
+              {/* Grid */}
+              {[.25,.5,.75,1].map(p=>(
+                <polygon key={p} points={pts(axes.map(()=>p))}
+                  stroke={c} strokeOpacity=".08" strokeWidth=".5" fill="none"/>
+              ))}
+              {/* Axes */}
+              {axes.map((_,i)=>{
+                const a=(i/5)*2*Math.PI-Math.PI/2;
+                return <line key={i} x1={cx} y1={cy} x2={cx+r*Math.cos(a)} y2={cy+r*Math.sin(a)} stroke={c} strokeOpacity=".1" strokeWidth=".5"/>;
+              })}
+              {/* Before */}
+              <polygon points={pts(before)} fill={`${c}10`} stroke={c} strokeOpacity=".2" strokeWidth=".8"/>
+              {/* After */}
+              <polygon points={pts(after)} fill={`${c}25`} stroke={c} strokeOpacity=".8" strokeWidth="1.5" className="cv-fade"/>
+              {/* Axis labels */}
+              {axes.map((label,i)=>{
+                const a=(i/5)*2*Math.PI-Math.PI/2;
+                return <text key={label} x={cx+(r+12)*Math.cos(a)} y={cy+(r+12)*Math.sin(a)+3}
+                  fill={c} fillOpacity=".4" fontSize="6.5" fontFamily="Syne" textAnchor="middle">{label}</text>;
+              })}
+              {/* After dots */}
+              {after.map((v,i)=>{
+                const a=(i/5)*2*Math.PI-Math.PI/2;
+                return <circle key={i} cx={cx+r*v*Math.cos(a)} cy={cy+r*v*Math.sin(a)} r="2.5"
+                  fill={c} opacity=".85" className="cv-fade" style={{animationDelay:`${.3+i*.07}s`}}/>;
+              })}
+              {/* Score bars on right */}
+              {[
+                {label:"ChatGPT",v:91},{label:"プロンプト",v:87},{label:"自動化",v:83},
+              ].map((s,i)=>(
+                <g key={s.label} className="cv-fade" style={{animationDelay:`${.2+i*.1}s`}}>
+                  <text x="130" y={18+i*18} fill={c} fillOpacity=".45" fontSize="6.5" fontFamily="Syne">{s.label}</text>
+                  <rect x="130" y={22+i*18} width="60" height="5" rx="2.5" fill={c} fillOpacity=".08"/>
+                  <rect x="130" y={22+i*18} width={60*s.v/100} height="5" rx="2.5" fill={c} fillOpacity=".7"
+                    className="cv-bar-x" style={{animationDelay:`${.3+i*.1}s`}}/>
+                  <text x="193" y={26+i*18} fill={c} fillOpacity=".7" fontSize="6.5" fontFamily="Syne" fontWeight="700" textAnchor="end">{s.v}</text>
+                </g>
+              ))}
+            </>
+          );
+        })()}
+      </svg>
+    ),
+
+    // ── Automation: ワークフローパイプライン ──
+    "Automation": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {/* Pipeline rows */}
+        {[
+          {y:20,nodes:["メール受信","分類AI","Notion登録","完了"],speeds:["0s",".2s",".4s",".6s"]},
+          {y:50,nodes:["在庫検知","n8n","Slack通知","完了"],speeds:[".1s",".3s",".5s",".7s"]},
+        ].map((row,ri)=>(
+          <g key={ri}>
+            {row.nodes.map((n,i,arr)=>{
+              const x=12+i*47;
+              return (
+                <g key={n} className="cv-fade" style={{animationDelay:row.speeds[i]}}>
+                  <rect x={x} y={row.y-9} width="38" height="18" rx="4"
+                    fill={i===1?`${c}1A`:`${c}0C`} stroke={c} strokeOpacity={i===1?.4:.18} strokeWidth=".8"/>
+                  <text x={x+19} y={row.y+4} fill={c} fillOpacity={i===1?.85:.5}
+                    fontSize="6.5" fontFamily="Syne" fontWeight={i===1?"700":"400"} textAnchor="middle">{n}</text>
+                  {i<arr.length-1&&(
+                    <line x1={x+38} y1={row.y} x2={x+47} y2={row.y}
+                      stroke={c} strokeOpacity=".3" strokeWidth="1" strokeDasharray="3 2" className="cv-flow"
+                      style={{animationDelay:`${.2+i*.2}s`}}/>
+                  )}
+                </g>
+              );
+            })}
+          </g>
+        ))}
+        {/* 200h badge */}
+        <rect x="60" y="68" width="80" height="18" rx="5" fill={`${c}12`} stroke={c} strokeOpacity=".25" strokeWidth=".8"/>
+        <text x="100" y="80" fill={c} fillOpacity=".9" fontSize="9" fontFamily="Syne" fontWeight="700" textAnchor="middle">200h / 月 削減</text>
+        {/* Scanning line */}
+        <line x1="0" y1="0" x2="200" y2="0" stroke={c} strokeOpacity=".25" strokeWidth="1" className="cv-scan"/>
+      </svg>
+    ),
+
+    // ── Promotion: 同心円ブロードキャスト ──
+    "Promotion": (
+      <svg viewBox="0 0 200 90" fill="none" className="w-full h-full">
+        <style>{caseAnimStyles}</style>
+        {/* Broadcast rings */}
+        <circle cx="55" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:"0s"}}/>
+        <circle cx="55" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:".8s"}}/>
+        <circle cx="55" cy="45" r="4" fill={c} opacity="0" className="cv-wave" style={{animationDelay:"1.6s"}}/>
+        <circle cx="55" cy="45" r="15" stroke={c} strokeOpacity=".12" strokeWidth="1" fill="none"/>
+        <circle cx="55" cy="45" r="26" stroke={c} strokeOpacity=".08" strokeWidth="1" fill="none"/>
+        <circle cx="55" cy="45" r="38" stroke={c} strokeOpacity=".04" strokeWidth="1" fill="none"/>
+        {/* Center icon */}
+        <circle cx="55" cy="45" r="8" fill={c} fillOpacity=".2" stroke={c} strokeOpacity=".5" strokeWidth="1"/>
+        <text x="55" y="49" fill={c} fontSize="8" fontFamily="Syne" fontWeight="700" textAnchor="middle" opacity=".9">▲</text>
+        {/* Channel bars on right */}
+        {[
+          {label:"インフルエンサー",v:.86,reach:"2.4M"},
+          {label:"SNS広告",v:.65,reach:"1.8M"},
+          {label:"オーガニック",v:.38,reach:"680K"},
+          {label:"LP経由",v:.18,reach:"124K"},
+        ].map((ch,i)=>(
+          <g key={ch.label} className="cv-fade" style={{animationDelay:`${i*.1}s`}}>
+            <text x="103" y={16+i*19} fill={c} fillOpacity=".4" fontSize="6" fontFamily="Syne">{ch.label}</text>
+            <rect x="103" y={20+i*19} width="72" height="4.5" rx="2" fill={c} fillOpacity=".08"/>
+            <rect x="103" y={20+i*19} width={72*ch.v} height="4.5" rx="2" fill={c} fillOpacity=".65"
+              className="cv-bar-x" style={{animationDelay:`${.1+i*.1}s`}}/>
+            <text x="178" y={24+i*19} fill={c} fillOpacity=".7" fontSize="6.5" fontFamily="Syne" fontWeight="700" textAnchor="end">{ch.reach}</text>
           </g>
         ))}
       </svg>
     ),
   };
 
-  return visuals[sector] || visuals.Finance;
+  return visuals[sector] || visuals["AI Bot"];
 };
 
 const CasesSection = () => {
