@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import StatsSection from "./sections/StatsSection";
 import BenefitSection from "./sections/BenefitSection";
 import CasesSection from "./sections/CasesSection";
+import ChatbotSection from "./sections/ChatbotSection";
 import FooterSection from "./sections/FooterSection";
 import CustomCursor from "./components/CustomCursor";
 
@@ -31,6 +32,7 @@ const App = () => {
           <MessageSection />
           <ServicesSection />
           <StatsSection />
+          <ChatbotSection />
 
           <div>
             <BenefitSection />

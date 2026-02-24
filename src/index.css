@@ -237,6 +237,11 @@ body::-webkit-scrollbar {
     }
   }
 
+  .chatbot-section {
+    @apply w-full relative;
+    height: 100dvh;
+  }
+
   .cases-section {
     @apply bg-bg-primary relative w-full;
     height: 120dvh;
