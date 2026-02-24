@@ -60,7 +60,7 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
         {/* Big metric */}
         <text x="12" y="92" fill={c} fillOpacity=".9" fontSize="18" fontFamily="Syne" fontWeight="700">42%</text>
         <text x="52" y="92" fill={c} fillOpacity=".45" fontSize="9" fontFamily="Syne">業務時間削減</text>
-        <text x="12" y="74" fill={c} fillOpacity=".25" fontSize="8" fontFamily="Syne" className="cv-blink" x="155" y="74">█</text>
+        <text x="155" y="74" fill={c} fillOpacity=".3" fontSize="8" fontFamily="Syne" className="cv-blink">█</text>
       </svg>
     ),
 
@@ -74,21 +74,25 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
         ))}
         {/* Vertical bars */}
         {[
-          {x:18,h:25,label:"1月",op:.3},{x:46,h:36,label:"2月",op:.42},
-          {x:74,h:48,label:"3月",op:.54},{x:102,h:58,label:"4月",op:.65},
-          {x:130,h:66,label:"5月",op:.78},{x:158,h:75,label:"6月",op:.95},
+          {x:12,h:22,label:"1月",op:.28},{x:46,h:33,label:"2月",op:.4},
+          {x:80,h:45,label:"3月",op:.52},{x:114,h:55,label:"4月",op:.64},
+          {x:148,h:63,label:"5月",op:.78},{x:182,h:72,label:"6月",op:.95},
         ].map((b,i)=>(
           <g key={b.label} className="cv-fade" style={{animationDelay:`${i*.08}s`}}>
-            <rect x={b.x} y={78-b.h} width="22" height={b.h} rx="3"
+            <rect x={b.x} y={78-b.h} width="24" height={b.h} rx="3"
               fill={c} fillOpacity={b.op} className="cv-bar-y" style={{animationDelay:`${i*.06}s`}}/>
-            <text x={b.x+11} y="87" fill={c} fillOpacity=".4" fontSize="8" fontFamily="Syne" textAnchor="middle">{b.label}</text>
+            {/* Label above bar with bg for contrast */}
+            <rect x={b.x+1} y={78-b.h-14} width="22" height="13" rx="2" fill="#060A0E" fillOpacity=".65"/>
+            <text x={b.x+12} y={78-b.h-4} fill="#F8FAFC" fillOpacity=".9" fontSize="9" fontFamily="Syne" fontWeight="700" textAnchor="middle">{b.label}</text>
           </g>
         ))}
-        {/* Big ROAS metric */}
-        <text x="193" y="22" fill={c} fillOpacity=".95" fontSize="22" fontFamily="Syne" fontWeight="700" textAnchor="end">×8.4</text>
-        <text x="193" y="34" fill={c} fillOpacity=".5" fontSize="10" fontFamily="Syne" textAnchor="end">ROAS達成</text>
+        {/* Big ROAS metric — top-left badge, clear of bars */}
+        <rect x="6" y="4" width="82" height="30" rx="6" fill="#060A0E" fillOpacity=".7"/>
+        <text x="14" y="23" fill={c} fillOpacity="1" fontSize="24" fontFamily="Syne" fontWeight="700">×8.4</text>
+        <text x="52" y="23" fill="#F8FAFC" fillOpacity=".6" fontSize="10" fontFamily="Syne">ROAS</text>
+        <text x="52" y="32" fill="#F8FAFC" fillOpacity=".4" fontSize="9" fontFamily="Syne">達成</text>
         {/* Trend overlay line */}
-        <polyline points="29,53 57,42 85,30 113,20 141,12 169,3"
+        <polyline points="24,56 58,45 92,34 126,22 160,14 194,6"
           stroke={c} strokeWidth="1.5" strokeDasharray="3 3" opacity=".5" strokeLinecap="round" className="cv-draw"/>
       </svg>
     ),
@@ -119,10 +123,10 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
             </g>
           );
         })}
-        {/* Big count — right side */}
-        <text x="128" y="44" fill={c} fillOpacity=".95" fontSize="28" fontFamily="Syne" fontWeight="700">+8,000</text>
-        <text x="128" y="59" fill={c} fillOpacity=".5" fontSize="11" fontFamily="Syne">友だち獲得</text>
-        <text x="128" y="74" fill={c} fillOpacity=".35" fontSize="9" fontFamily="Syne">3ヶ月で達成</text>
+        {/* Big count — right-aligned to prevent overflow */}
+        <text x="196" y="44" fill={c} fillOpacity=".95" fontSize="22" fontFamily="Syne" fontWeight="700" textAnchor="end">+8,000</text>
+        <text x="196" y="58" fill={c} fillOpacity=".55" fontSize="11" fontFamily="Syne" textAnchor="end">友だち獲得</text>
+        <text x="196" y="71" fill={c} fillOpacity=".35" fontSize="9" fontFamily="Syne" textAnchor="end">3ヶ月で達成</text>
       </svg>
     ),
 
@@ -142,8 +146,8 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
             <g key={i} className="cv-fade" style={{animationDelay:`${i*.1}s`}}>
               <polygon points={`${tx},${s.y} ${tx+s.tw},${s.y} ${bx+s.bw},${s.y+17} ${bx},${s.y+17}`}
                 fill={c} fillOpacity={s.op} stroke={c} strokeOpacity=".12" strokeWidth=".5"/>
-              <text x="8" y={s.y+13} fill={c} fillOpacity=".55" fontSize="9" fontFamily="Syne">{s.label}</text>
-              <text x="192" y={s.y+13} fill={c} fillOpacity=".8" fontSize="9.5" fontFamily="Syne" fontWeight="700" textAnchor="end">{s.n}</text>
+              <text x="8" y={s.y+13} fill="#F8FAFC" fillOpacity=".7" fontSize="9" fontFamily="Syne">{s.label}</text>
+              <text x="192" y={s.y+13} fill="#F8FAFC" fillOpacity=".95" fontSize="9.5" fontFamily="Syne" fontWeight="700" textAnchor="end">{s.n}</text>
             </g>
           );
         })}
@@ -227,7 +231,7 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
                 <g key={n} className="cv-fade" style={{animationDelay:row.speeds[i]}}>
                   <rect x={x} y={row.y-10} width="40" height="20" rx="5"
                     fill={i===1?`${c}1A`:`${c}0C`} stroke={c} strokeOpacity={i===1?.45:.2} strokeWidth="1"/>
-                  <text x={x+20} y={row.y+4} fill={c} fillOpacity={i===1?.9:.55}
+                  <text x={x+20} y={row.y+4} fill="#F8FAFC" fillOpacity={i===1?.95:.65}
                     fontSize="8.5" fontFamily="Syne" fontWeight={i===1?"700":"400"} textAnchor="middle">{n}</text>
                   {i<arr.length-1&&(
                     <line x1={x+40} y1={row.y} x2={x+47} y2={row.y}

@@ -129,9 +129,9 @@ export const GenAICardVisual = ({ color }) => (
             <rect x={x - 19} y="28" width="38" height="34" rx="7"
               fill={label === "Claude" ? `${color}20` : `${color}0C`}
               stroke={color} strokeOpacity={label === "Claude" ? 0.5 : 0.18} strokeWidth="1" />
-            <text x={x} y="43" fill={color} fillOpacity={label === "Claude" ? 0.9 : 0.55}
+            <text x={x} y="43" fill="#F8FAFC" fillOpacity={label === "Claude" ? 0.95 : 0.7}
               fontSize="12" fontFamily="Syne" fontWeight="700" textAnchor="middle">{label}</text>
-            <text x={x} y="55" fill={color} fillOpacity="0.4"
+            <text x={x} y="55" fill="#F8FAFC" fillOpacity="0.45"
               fontSize="10" fontFamily="Syne" textAnchor="middle">{sub}</text>
           </g>
         ))}
@@ -406,12 +406,12 @@ export const LineFunnelCardVisual = ({ color }) => {
                   fill={color} opacity={opacity}
                   stroke={color} strokeOpacity={0.15} strokeWidth="0.5"
                 />
-                <text x="60" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.55"
+                <text x="60" y={y + segH / 2 + 3.5} fill="#F8FAFC" fillOpacity="0.75"
                   fontSize="10" fontFamily="Syne">{s.stage}</text>
-                <text x="220" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.75"
+                <text x="220" y={y + segH / 2 + 3.5} fill="#F8FAFC" fillOpacity="0.9"
                   fontSize="10" fontFamily="Syne" textAnchor="end">{s.count}</text>
                 {s.cvr && (
-                  <text x="246" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.95"
+                  <text x="246" y={y + segH / 2 + 3.5} fill={color} fillOpacity="1"
                     fontSize="11" fontFamily="Syne" fontWeight="700">{s.cvr}</text>
                 )}
               </g>
