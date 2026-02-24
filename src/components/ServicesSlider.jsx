@@ -117,10 +117,7 @@ const ServicesSlider = () => {
                       className="w-full h-px mb-4"
                       style={{ background: `linear-gradient(90deg, ${service.color}30, transparent)` }}
                     />
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-[9px] text-white/30 tracking-[0.2em] uppercase">
-                        Learn more
-                      </span>
+                    <div className="flex items-center justify-end">
                       <div
                         className="w-9 h-9 rounded-full border flex-center group-hover:scale-110 transition-all duration-300"
                         style={{ borderColor: `${service.color}35` }}

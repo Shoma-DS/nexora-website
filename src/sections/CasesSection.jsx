@@ -1,5 +1,6 @@
 import { caseStudies } from "../constants";
 import { useGSAP } from "@gsap/react";
+import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 
 const caseAnimStyles = `
@@ -288,7 +289,11 @@ const SectorVisual = ({ sector, color = "#22D3EE" }) => {
 };
 
 const CasesSection = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
   useGSAP(() => {
+    if (window.innerWidth < 768) return;
+
     gsap.set(".cases-section", {
       marginTop: "-140vh",
     });
@@ -325,17 +330,28 @@ const CasesSection = () => {
 
   return (
     <section id="cases" className="cases-section">
-      <div className="absolute size-full flex flex-col items-center pt-[5vw]">
-        <h1 className="text-white/10 first-title">Case</h1>
-        <h1 className="text-gradient-gold sec-title">Study</h1>
-        <h1 className="text-white/10 third-title">Results</h1>
-      </div>
+      {/* Desktop: big backdrop title */}
+      {!isMobile && (
+        <div className="absolute size-full flex flex-col items-center pt-[5vw] pointer-events-none">
+          <h1 className="text-white/10 first-title">Case</h1>
+          <h1 className="text-gradient-gold sec-title">Study</h1>
+          <h1 className="text-white/10 third-title">Results</h1>
+        </div>
+      )}
+
+      {/* Mobile: simple section header */}
+      {isMobile && (
+        <div className="text-center px-5 pt-16 pb-8">
+          <p className="font-display text-gold/50 text-xs tracking-[0.4em] uppercase mb-2">実績</p>
+          <h2 className="font-display font-[800] text-white text-3xl tracking-tighter">Case Study</h2>
+        </div>
+      )}
 
       <div className="pin-box">
         {caseStudies.map((study, index) => (
           <div
             key={index}
-            className={`case-card ${study.translation || ""} ${study.rotation}`}
+            className={`case-card ${isMobile ? "" : `${study.translation || ""} ${study.rotation}`}`}
           >
             <div
               className="w-full md:h-[500px] h-[420px] flex flex-col"
