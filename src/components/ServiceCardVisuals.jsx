@@ -103,10 +103,10 @@ export const GenAICardVisual = ({ color }) => (
     <style>{animStyles}</style>
 
     <div className="flex items-center justify-between mb-3">
-      <span className="font-display text-[11px] tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
+      <span className="font-display text-xs tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
         AI Workflow Demo
       </span>
-      <span className="font-display text-xs font-[700] anim-count" style={{ color }}>応答 0.4s</span>
+      <span className="font-display text-sm font-[700] anim-count" style={{ color }}>応答 0.4s</span>
     </div>
 
     {/* Workflow node graph */}
@@ -130,9 +130,9 @@ export const GenAICardVisual = ({ color }) => (
               fill={label === "Claude" ? `${color}20` : `${color}0C`}
               stroke={color} strokeOpacity={label === "Claude" ? 0.5 : 0.18} strokeWidth="1" />
             <text x={x} y="43" fill={color} fillOpacity={label === "Claude" ? 0.9 : 0.55}
-              fontSize="8.5" fontFamily="Syne" fontWeight="700" textAnchor="middle">{label}</text>
-            <text x={x} y="55" fill={color} fillOpacity="0.35"
-              fontSize="7" fontFamily="Syne" textAnchor="middle">{sub}</text>
+              fontSize="12" fontFamily="Syne" fontWeight="700" textAnchor="middle">{label}</text>
+            <text x={x} y="55" fill={color} fillOpacity="0.4"
+              fontSize="10" fontFamily="Syne" textAnchor="middle">{sub}</text>
           </g>
         ))}
 
@@ -147,7 +147,7 @@ export const GenAICardVisual = ({ color }) => (
         <div className="w-2 h-2 rounded-full" style={{ background: "#FF5F56" }} />
         <div className="w-2 h-2 rounded-full" style={{ background: "#FFBD2E" }} />
         <div className="w-2 h-2 rounded-full" style={{ background: "#27C93F" }} />
-        <span className="font-display text-[9px] ml-2 font-[600]" style={{ color: `${color}35` }}>ai-agent.log</span>
+        <span className="font-display text-xs ml-2 font-[600]" style={{ color: `${color}35` }}>ai-agent.log</span>
       </div>
       {[
         { t: "$ Trigger: 新規問い合わせ", d: "0s", h: false },
@@ -157,7 +157,7 @@ export const GenAICardVisual = ({ color }) => (
         { t: "> Slack 送信完了 ✓", d: "0.6s", h: false },
       ].map(({ t, d, h }) => (
         <div key={t} className="flex items-center gap-1.5 mb-0.5 anim-fade" style={{ animationDelay: d }}>
-          <span className="font-display text-[9px] leading-relaxed"
+          <span className="font-display text-xs leading-relaxed"
             style={{ color: h ? color : `${color}50`, fontWeight: h ? 700 : 400 }}>{t}</span>
         </div>
       ))}
@@ -169,8 +169,8 @@ export const GenAICardVisual = ({ color }) => (
       {[{ label: "業務削減", v: "42%" }, { label: "対応速度", v: "24/7" }, { label: "精度", v: "97%" }].map(m => (
         <div key={m.label} className="flex-1 text-center py-2 rounded-xl"
           style={{ background: `${color}0A`, border: `1px solid ${color}15` }}>
-          <p className="font-display text-sm font-[700]" style={{ color }}>{m.v}</p>
-          <p className="font-display text-[9px] mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
+          <p className="font-display text-xl font-[800]" style={{ color }}>{m.v}</p>
+          <p className="font-display text-xs mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
         </div>
       ))}
     </div>
@@ -198,10 +198,10 @@ export const TrainingCardVisual = ({ color }) => {
     <div className="w-full mt-5 mb-2">
       <style>{animStyles}</style>
       <div className="flex items-center justify-between mb-3">
-        <span className="font-display text-[11px] tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
+        <span className="font-display text-xs tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
           Skill Radar
         </span>
-        <span className="font-display text-xs font-[700] anim-count" style={{ color }}>平均スコア 89pt</span>
+        <span className="font-display text-sm font-[700] anim-count" style={{ color }}>平均スコア 89pt</span>
       </div>
 
       <div className="flex gap-3 mb-3">
@@ -237,7 +237,7 @@ export const TrainingCardVisual = ({ color }) => {
             const ly = cy + (r + 10) * Math.sin(angle);
             return (
               <text key={label} x={lx} y={ly + 3} fill={color} fillOpacity="0.45"
-                fontSize="7" fontFamily="Syne" textAnchor="middle">{label}</text>
+                fontSize="9" fontFamily="Syne" textAnchor="middle">{label}</text>
             );
           })}
           {/* Dot vertices after */}
@@ -261,8 +261,8 @@ export const TrainingCardVisual = ({ color }) => {
           ].map((s, i) => (
             <div key={s.skill}>
               <div className="flex justify-between mb-1">
-                <span className="font-display text-[10px] font-[500]" style={{ color: `${color}60` }}>{s.skill}</span>
-                <span className="font-display text-[10px] font-[700]" style={{ color }}>{s.after}pt</span>
+                <span className="font-display text-xs font-[500]" style={{ color: `${color}60` }}>{s.skill}</span>
+                <span className="font-display text-xs font-[700]" style={{ color }}>{s.after}pt</span>
               </div>
               <div className="relative h-[5px] rounded-full" style={{ background: `${color}10` }}>
                 <div className="absolute top-0 left-0 h-[5px] rounded-full"
@@ -278,8 +278,8 @@ export const TrainingCardVisual = ({ color }) => {
       {/* Tags row */}
       <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: `${color}08`, border: `1px solid ${color}14` }}>
         <div className="flex-1">
-          <p className="font-display text-xs font-[700] mb-1" style={{ color }}>研修完了率 92%</p>
-          <p className="font-display text-[10px]" style={{ color: `${color}50` }}>全受講者 70pt+ 達成</p>
+          <p className="font-display text-sm font-[800] mb-1" style={{ color }}>研修完了率 92%</p>
+          <p className="font-display text-xs" style={{ color: `${color}50` }}>全受講者 70pt+ 達成</p>
         </div>
         <div className="flex flex-wrap gap-1 justify-end">
           {["ChatGPT", "Claude", "n8n", "Dify"].map(tag => (
@@ -301,10 +301,10 @@ export const SocialAdsCardVisual = ({ color }) => (
   <div className="w-full mt-5 mb-2">
     <style>{animStyles}</style>
     <div className="flex items-center justify-between mb-3">
-      <span className="font-display text-[11px] tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
+      <span className="font-display text-xs tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
         Ad Performance
       </span>
-      <span className="font-display text-xs font-[700] anim-count" style={{ color }}>ROAS 8.4×</span>
+      <span className="font-display text-sm font-[700] anim-count" style={{ color }}>ROAS 8.4×</span>
     </div>
 
     {/* ROAS trend line with animated draw */}
@@ -316,7 +316,7 @@ export const SocialAdsCardVisual = ({ color }) => (
         ))}
         {/* Month labels */}
         {["1月", "2月", "3月", "4月", "5月", "6月"].map((m, i) => (
-          <text key={m} x={20 + i * 48} y="70" fill={color} fillOpacity="0.25" fontSize="7.5" fontFamily="Syne" textAnchor="middle">{m}</text>
+          <text key={m} x={20 + i * 48} y="70" fill={color} fillOpacity="0.35" fontSize="10" fontFamily="Syne" textAnchor="middle">{m}</text>
         ))}
         {/* Fill area */}
         <path d="M0,64 C28,60 56,50 84,40 C112,30 140,20 168,14 C196,8 224,5 280,3 L280,68 L0,68Z"
@@ -332,7 +332,7 @@ export const SocialAdsCardVisual = ({ color }) => (
           </g>
         ))}
         {/* Label at end */}
-        <text x="232" y="14" fill={color} fillOpacity="0.85" fontSize="10" fontFamily="Syne" fontWeight="700">×8.4 ROAS</text>
+        <text x="232" y="16" fill={color} fillOpacity="0.9" fontSize="16" fontFamily="Syne" fontWeight="700">×8.4 ROAS</text>
       </svg>
     </div>
 
@@ -345,10 +345,10 @@ export const SocialAdsCardVisual = ({ color }) => (
         { platform: "Google", roas: "5.9×", h: 56 },
       ].map((p, i) => (
         <div key={p.platform} className="flex-1 flex flex-col items-center gap-1">
-          <span className="font-display text-[9px] font-[700]" style={{ color }}>{p.roas}</span>
+          <span className="font-display text-xs font-[700]" style={{ color }}>{p.roas}</span>
           <div className="w-full rounded-t-lg anim-bar-y"
             style={{ height: `${p.h}%`, background: `${color}${i === 0 ? "80" : i === 1 ? "5C" : i === 2 ? "42" : "30"}`, animationDelay: `${i * 0.08}s` }} />
-          <span className="font-display text-[9px]" style={{ color: `${color}50` }}>{p.platform}</span>
+          <span className="font-display text-xs" style={{ color: `${color}50` }}>{p.platform}</span>
         </div>
       ))}
     </div>
@@ -358,8 +358,8 @@ export const SocialAdsCardVisual = ({ color }) => (
       {[{ label: "CPC削減", v: "−43%" }, { label: "CTR", v: "4.2%" }, { label: "CVR", v: "×2.8" }].map(m => (
         <div key={m.label} className="flex-1 text-center py-2 rounded-xl"
           style={{ background: `${color}0A`, border: `1px solid ${color}15` }}>
-          <p className="font-display text-sm font-[700]" style={{ color }}>{m.v}</p>
-          <p className="font-display text-[9px] mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
+          <p className="font-display text-xl font-[800]" style={{ color }}>{m.v}</p>
+          <p className="font-display text-xs mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
         </div>
       ))}
     </div>
@@ -382,10 +382,10 @@ export const LineFunnelCardVisual = ({ color }) => {
     <div className="w-full mt-5 mb-2">
       <style>{animStyles}</style>
       <div className="flex items-center justify-between mb-3">
-        <span className="font-display text-[11px] tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
+        <span className="font-display text-xs tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
           Funnel Visualization
         </span>
-        <span className="font-display text-xs font-[700] anim-count" style={{ color }}>CVR ×3.2</span>
+        <span className="font-display text-sm font-[700] anim-count" style={{ color }}>CVR ×3.2</span>
       </div>
 
       {/* SVG trapezoid funnel */}
@@ -407,12 +407,12 @@ export const LineFunnelCardVisual = ({ color }) => {
                   stroke={color} strokeOpacity={0.15} strokeWidth="0.5"
                 />
                 <text x="60" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.55"
-                  fontSize="8" fontFamily="Syne">{s.stage}</text>
-                <text x="220" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.7"
-                  fontSize="8" fontFamily="Syne" textAnchor="end">{s.count}</text>
+                  fontSize="10" fontFamily="Syne">{s.stage}</text>
+                <text x="220" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.75"
+                  fontSize="10" fontFamily="Syne" textAnchor="end">{s.count}</text>
                 {s.cvr && (
-                  <text x="246" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.9"
-                    fontSize="8.5" fontFamily="Syne" fontWeight="700">{s.cvr}</text>
+                  <text x="246" y={y + segH / 2 + 3.5} fill={color} fillOpacity="0.95"
+                    fontSize="11" fontFamily="Syne" fontWeight="700">{s.cvr}</text>
                 )}
               </g>
             );
@@ -441,10 +441,10 @@ export const PromotionCardVisual = ({ color }) => (
   <div className="w-full mt-5 mb-2">
     <style>{animStyles}</style>
     <div className="flex items-center justify-between mb-3">
-      <span className="font-display text-[11px] tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
+      <span className="font-display text-xs tracking-[0.2em] uppercase font-[600]" style={{ color: `${color}70` }}>
         Campaign Reach
       </span>
-      <span className="font-display text-xs font-[700] anim-count" style={{ color }}>獲得 ×3.8</span>
+      <span className="font-display text-sm font-[700] anim-count" style={{ color }}>獲得 ×3.8</span>
     </div>
 
     {/* Reach rings + channel bars side by side */}
@@ -465,9 +465,9 @@ export const PromotionCardVisual = ({ color }) => (
           <circle cx="50" cy="50" r="6" fill={color} opacity="0.85" />
           <circle cx="50" cy="50" r="3" fill="#060A0E" />
           {/* Reach labels */}
-          <text x="50" y="24" fill={color} fillOpacity="0.45" fontSize="7" fontFamily="Syne" textAnchor="middle">4.9M</text>
-          <text x="50" y="38" fill={color} fillOpacity="0.3" fontSize="6.5" fontFamily="Syne" textAnchor="middle">1.8M</text>
-          <text x="50" y="57" fill={color} fillOpacity="0.2" fontSize="6" fontFamily="Syne" textAnchor="middle">680K</text>
+          <text x="50" y="24" fill={color} fillOpacity="0.55" fontSize="10" fontFamily="Syne" fontWeight="700" textAnchor="middle">4.9M</text>
+          <text x="50" y="38" fill={color} fillOpacity="0.38" fontSize="9" fontFamily="Syne" textAnchor="middle">1.8M</text>
+          <text x="50" y="57" fill={color} fillOpacity="0.25" fontSize="8" fontFamily="Syne" textAnchor="middle">680K</text>
           {/* Orbit dots */}
           {[0, 72, 144, 216, 288].map((deg, i) => {
             const rad = (deg - 90) * Math.PI / 180;
@@ -490,8 +490,8 @@ export const PromotionCardVisual = ({ color }) => (
         ].map((c, i) => (
           <div key={c.ch}>
             <div className="flex justify-between mb-0.5">
-              <span className="font-display text-[10px] font-[500]" style={{ color: `${color}55` }}>{c.ch}</span>
-              <span className="font-display text-[10px] font-[700]" style={{ color }}>{c.reach}</span>
+              <span className="font-display text-xs font-[500]" style={{ color: `${color}55` }}>{c.ch}</span>
+              <span className="font-display text-xs font-[700]" style={{ color }}>{c.reach}</span>
             </div>
             <div className="h-[5px] rounded-full" style={{ background: `${color}10` }}>
               <div className="h-[5px] rounded-full anim-bar-x"
@@ -507,8 +507,8 @@ export const PromotionCardVisual = ({ color }) => (
       {[{ label: "総リーチ", v: "4.9M" }, { label: "エンゲージ率", v: "5.8%" }, { label: "LP CVR", v: "8.4%" }].map(m => (
         <div key={m.label} className="flex-1 text-center py-2 rounded-xl"
           style={{ background: `${color}0A`, border: `1px solid ${color}15` }}>
-          <p className="font-display text-sm font-[700]" style={{ color }}>{m.v}</p>
-          <p className="font-display text-[9px] mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
+          <p className="font-display text-xl font-[800]" style={{ color }}>{m.v}</p>
+          <p className="font-display text-xs mt-0.5 font-[500]" style={{ color: `${color}50` }}>{m.label}</p>
         </div>
       ))}
     </div>
