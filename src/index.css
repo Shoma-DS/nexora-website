@@ -237,9 +237,15 @@ body::-webkit-scrollbar {
     }
   }
 
-  .chatbot-section {
+  .cb-section {
     @apply w-full relative;
     height: 100dvh;
+
+    @media (max-width: 767px) {
+      height: auto;
+      min-height: fit-content;
+      padding-bottom: 3rem;
+    }
   }
 
   .cases-section {
